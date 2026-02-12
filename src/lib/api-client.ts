@@ -185,3 +185,19 @@ export const reportsApi = {
 
   lowStock: () => apiRequest("/reports?type=low-stock"),
 };
+
+// ==========================================
+// Users API (Admin only)
+// ==========================================
+export const usersApi = {
+  getAll: () => apiRequest("/users"),
+
+  update: (id: number, data: Record<string, unknown>) =>
+    apiRequest(`/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: number) =>
+    apiRequest(`/users/${id}`, { method: "DELETE" }),
+};

@@ -18,6 +18,7 @@ import {
   ShoppingBag,
   ChevronRight,
   Shield,
+  Settings,
 } from "lucide-react";
 
 const navigation = [
@@ -28,6 +29,7 @@ const navigation = [
   { name: "Customers", href: "/customers", icon: Users, roles: ["admin", "manager", "cashier"] },
   { name: "Sales History", href: "/sales", icon: Receipt, roles: ["admin", "manager", "cashier"] },
   { name: "Reports", href: "/reports", icon: BarChart3, roles: ["admin", "manager"] },
+  { name: "Settings", href: "/settings", icon: Settings, roles: ["admin"] },
 ];
 
 export default function Sidebar() {
