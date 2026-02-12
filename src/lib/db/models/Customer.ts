@@ -16,15 +16,15 @@ interface CustomerAttributes {
 interface CustomerCreationAttributes extends Optional<CustomerAttributes, "id" | "email" | "phone" | "address" | "loyalty_points"> {}
 
 class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> implements CustomerAttributes {
-  public id!: number;
-  public name!: string;
-  public email!: string | null;
-  public phone!: string | null;
-  public address!: string | null;
-  public loyalty_points!: number;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare name: string;
+  declare email: string | null;
+  declare phone: string | null;
+  declare address: string | null;
+  declare loyalty_points: number;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 }
 
 Customer.init(

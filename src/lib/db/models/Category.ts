@@ -14,13 +14,13 @@ interface CategoryAttributes {
 interface CategoryCreationAttributes extends Optional<CategoryAttributes, "id" | "description" | "is_active"> {}
 
 class Category extends Model<CategoryAttributes, CategoryCreationAttributes> implements CategoryAttributes {
-  public id!: number;
-  public name!: string;
-  public description!: string | null;
-  public is_active!: boolean;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare name: string;
+  declare description: string | null;
+  declare is_active: boolean;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 }
 
 Category.init(

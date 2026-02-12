@@ -30,25 +30,25 @@ interface SaleCreationAttributes
   > {}
 
 class Sale extends Model<SaleAttributes, SaleCreationAttributes> implements SaleAttributes {
-  public id!: number;
-  public invoice_number!: string;
-  public user_id!: number;
-  public customer_id!: number | null;
-  public subtotal!: number;
-  public discount_amount!: number;
-  public discount_type!: "percentage" | "fixed" | null;
-  public discount_value!: number;
-  public tax_rate!: number;
-  public tax_amount!: number;
-  public grand_total!: number;
-  public amount_paid!: number;
-  public change_amount!: number;
-  public payment_method!: "cash" | "card" | "mobile";
-  public status!: "completed" | "refunded" | "cancelled";
-  public notes!: string | null;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare invoice_number: string;
+  declare user_id: number;
+  declare customer_id: number | null;
+  declare subtotal: number;
+  declare discount_amount: number;
+  declare discount_type: "percentage" | "fixed" | null;
+  declare discount_value: number;
+  declare tax_rate: number;
+  declare tax_amount: number;
+  declare grand_total: number;
+  declare amount_paid: number;
+  declare change_amount: number;
+  declare payment_method: "cash" | "card" | "mobile";
+  declare status: "completed" | "refunded" | "cancelled";
+  declare notes: string | null;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 }
 
 Sale.init(

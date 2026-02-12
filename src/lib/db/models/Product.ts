@@ -21,20 +21,20 @@ interface ProductAttributes {
 interface ProductCreationAttributes extends Optional<ProductAttributes, "id" | "description" | "image_url" | "is_active" | "low_stock_threshold"> {}
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
-  public id!: number;
-  public name!: string;
-  public sku!: string;
-  public description!: string | null;
-  public category_id!: number;
-  public price!: number;
-  public cost_price!: number;
-  public stock_quantity!: number;
-  public low_stock_threshold!: number;
-  public image_url!: string | null;
-  public is_active!: boolean;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare name: string;
+  declare sku: string;
+  declare description: string | null;
+  declare category_id: number;
+  declare price: number;
+  declare cost_price: number;
+  declare stock_quantity: number;
+  declare low_stock_threshold: number;
+  declare image_url: string | null;
+  declare is_active: boolean;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 }
 
 Product.init(

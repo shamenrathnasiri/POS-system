@@ -19,18 +19,18 @@ interface SaleItemAttributes {
 interface SaleItemCreationAttributes extends Optional<SaleItemAttributes, "id" | "discount"> {}
 
 class SaleItem extends Model<SaleItemAttributes, SaleItemCreationAttributes> implements SaleItemAttributes {
-  public id!: number;
-  public sale_id!: number;
-  public product_id!: number;
-  public product_name!: string;
-  public product_sku!: string;
-  public quantity!: number;
-  public unit_price!: number;
-  public discount!: number;
-  public total!: number;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare sale_id: number;
+  declare product_id: number;
+  declare product_name: string;
+  declare product_sku: string;
+  declare quantity: number;
+  declare unit_price: number;
+  declare discount: number;
+  declare total: number;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 }
 
 SaleItem.init(

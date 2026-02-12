@@ -17,15 +17,15 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, "id" | "is_active"> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: number;
-  public name!: string;
-  public email!: string;
-  public password!: string;
-  public role!: "admin" | "cashier" | "manager";
-  public is_active!: boolean;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
-  public readonly deleted_at!: Date | null;
+  declare id: number;
+  declare name: string;
+  declare email: string;
+  declare password: string;
+  declare role: "admin" | "cashier" | "manager";
+  declare is_active: boolean;
+  declare readonly created_at: Date;
+  declare readonly updated_at: Date;
+  declare readonly deleted_at: Date | null;
 
   // Method to check password
   public async validatePassword(password: string): Promise<boolean> {

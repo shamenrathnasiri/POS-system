@@ -63,11 +63,15 @@ SaleItem.belongsTo(Product, {
 // ==========================================
 // Sync Database
 // ==========================================
-const syncDatabase = async () => {
+const syncDatabase = async (force = false) => {
   try {
     await sequelize.authenticate();
     console.log("✅ Database connection established successfully.");
-    await sequelize.sync({ alter: process.env.NODE_ENV === "development" });
+    if (force) {
+      await sequelize.sync({ force: true });
+    } else {
+      await sequelize.sync({ alter: process.env.NODE_ENV === "development" });
+    }
     console.log("✅ Database synced successfully.");
   } catch (error) {
     console.error("❌ Unable to connect to the database:", error);
