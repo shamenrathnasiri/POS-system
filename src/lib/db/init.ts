@@ -26,6 +26,9 @@ export async function initializeDatabase() {
       port: dbPort,
       dialect: "mysql",
       logging: false,
+      dialectOptions: {
+        connectTimeout: 60000,
+      },
     });
 
   // Step 1: Connect WITHOUT a database to create it if missing
@@ -34,9 +37,9 @@ export async function initializeDatabase() {
     await tempConnection.query(
       `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
     );
-    console.log(`✅ Database "${dbName}" is ready.`);
+    console.log(`Database "${dbName}" is ready.`);
   } catch (error) {
-    console.error(`❌ Failed to create database "${dbName}":`, error);
+    console.error(`Failed to create database "${dbName}":`, error);
     throw error;
   } finally {
     await tempConnection.close();
@@ -53,7 +56,7 @@ export async function initializeDatabase() {
 
     if (isTablespaceError) {
       console.warn(
-        "⚠️  Detected corrupted InnoDB tablespace. Cleaning up and recreating database..."
+        " Detected corrupted InnoDB tablespace. Cleaning up and recreating database..."
       );
 
       // Get MySQL data directory and remove orphaned .ibd files
@@ -72,7 +75,7 @@ export async function initializeDatabase() {
             for (const file of files) {
               if (file.endsWith(".ibd")) {
                 fs.unlinkSync(path.join(dbDir, file));
-                console.log(`  🗑️  Removed orphaned file: ${file}`);
+                console.log(` Removed orphaned file: ${file}`);
               }
             }
           }
@@ -82,7 +85,7 @@ export async function initializeDatabase() {
         await tempConnection.query(
           `CREATE DATABASE \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
         );
-        console.log(`✅ Database "${dbName}" recreated.`);
+        console.log(`Database "${dbName}" recreated.`);
       } finally {
         await tempConnection.close();
       }

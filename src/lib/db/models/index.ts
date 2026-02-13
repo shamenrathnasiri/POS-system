@@ -63,19 +63,53 @@ SaleItem.belongsTo(Product, {
 // ==========================================
 // Sync Database
 // ==========================================
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const syncDatabase = async (force = false) => {
-  try {
-    await sequelize.authenticate();
-    console.log("✅ Database connection established successfully.");
-    if (force) {
-      await sequelize.sync({ force: true });
-    } else {
-      await sequelize.sync({ alter: process.env.NODE_ENV === "development" });
+  const maxRetries = 3;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      await sequelize.authenticate();
+      console.log("✅ Database connection established successfully.");
+
+      if (force) {
+        await sequelize.sync({ force: true });
+      } else {
+        // Use sync without alter to avoid heavy introspection queries
+        // that can cause ECONNRESET on some MySQL configurations.
+        // For schema changes, use migrations instead.
+        await sequelize.sync();
+      }
+      console.log("✅ Database synced successfully.");
+      return; // Success — exit the retry loop
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      const isConnectionError =
+        errorMsg.includes("ECONNRESET") ||
+        errorMsg.includes("ETIMEDOUT") ||
+        errorMsg.includes("ECONNREFUSED") ||
+        errorMsg.includes("PROTOCOL_CONNECTION_LOST");
+
+      if (isConnectionError && attempt < maxRetries) {
+        const waitTime = attempt * 2000;
+        console.warn(
+          `⚠️  Database connection lost (attempt ${attempt}/${maxRetries}). Retrying in ${waitTime / 1000}s...`
+        );
+        // Close stale connections before retrying
+        try {
+          await sequelize.close();
+        } catch {
+          // Ignore close errors
+        }
+        await delay(waitTime);
+        continue;
+      }
+
+      console.error("❌ Unable to connect to the database:", error);
+      throw error;
     }
-    console.log("✅ Database synced successfully.");
-  } catch (error) {
-    console.error("❌ Unable to connect to the database:", error);
-    throw error;
   }
 };
 
