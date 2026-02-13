@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Product, Category } from "@/types";
+import { Product, Category, ApiResponse } from "@/types";
 import { productsApi, categoriesApi } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,12 +56,11 @@ export default function ProductsManager() {
   const fetchProducts = useCallback(async () => {
     try {
       setIsLoading(true);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res = (await productsApi.getAll({
         search,
         category_id: categoryFilter !== "all" ? parseInt(categoryFilter) : undefined,
         limit: 100,
-      })) as any;
+      })) as ApiResponse<{ products: Product[] }>;
       setProducts(res.data?.products || []);
     } catch (err) {
       console.error(err);
@@ -72,8 +71,7 @@ export default function ProductsManager() {
 
   const fetchCategories = useCallback(async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const res = (await categoriesApi.getAll()) as any;
+      const res = (await categoriesApi.getAll()) as ApiResponse<{ categories: Category[] }>;
       setCategories(res.data?.categories || []);
     } catch (err) {
       console.error(err);
@@ -162,7 +160,7 @@ export default function ProductsManager() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-6 border-b border-white/[0.06]">
+      <div className="p-6 border-b border-white/6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
@@ -173,7 +171,7 @@ export default function ProductsManager() {
           </div>
           <Button
             onClick={openCreateDialog}
-            className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25"
+            className="bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Product
@@ -210,7 +208,7 @@ export default function ProductsManager() {
       <ScrollArea className="flex-1">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/[0.06] hover:bg-transparent">
+            <TableRow className="border-white/6 hover:bg-transparent">
               <TableHead className="text-white/40">Product</TableHead>
               <TableHead className="text-white/40">SKU</TableHead>
               <TableHead className="text-white/40">Category</TableHead>
@@ -237,7 +235,7 @@ export default function ProductsManager() {
               products.map((product) => (
                 <TableRow
                   key={product.id}
-                  className="border-white/[0.04] hover:bg-white/[0.02]"
+                  className="border-white/4 hover:bg-white/2"
                 >
                   <TableCell className="font-medium text-white/80">
                     {product.name}
@@ -421,7 +419,7 @@ export default function ProductsManager() {
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 text-white"
+                className="flex-1 bg-linear-to-r from-blue-500 to-indigo-600 text-white"
               >
                 {editingProduct ? "Update Product" : "Create Product"}
               </Button>
