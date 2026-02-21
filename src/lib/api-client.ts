@@ -125,6 +125,15 @@ export const customersApi = {
 
   getById: (id: number) => apiRequest(`/customers/${id}`),
 
+  searchByPhone: (phone: string) =>
+    apiRequest(`/customers?phone=${encodeURIComponent(phone)}`),
+
+  quickAdd: (data: { phone: string; name?: string }) =>
+    apiRequest("/customers", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
   create: (data: { name: string; email?: string; phone?: string; address?: string }) =>
     apiRequest("/customers", {
       method: "POST",

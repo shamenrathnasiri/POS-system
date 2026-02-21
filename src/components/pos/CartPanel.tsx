@@ -1,20 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
-import { Customer } from "@/types";
-import { customersApi } from "@/lib/api-client";
+import CustomerSelector from "@/components/pos/CustomerSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Minus,
   Plus,
@@ -25,7 +17,6 @@ import {
   CreditCard,
   Smartphone,
   Banknote,
-  User,
 } from "lucide-react";
 
 interface CartPanelProps {
@@ -48,21 +39,6 @@ export default function CartPanel({ onCheckout }: CartPanelProps) {
 
   const [discountInput, setDiscountInput] = useState("");
   const [discountMode, setDiscountMode] = useState<"percentage" | "fixed">("percentage");
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  const fetchCustomers = useCallback(async () => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const res = (await customersApi.getAll({ limit: 200 })) as any;
-      setCustomers(res.data?.customers || []);
-    } catch (err) {
-      console.error("Failed to fetch customers", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCustomers();
-  }, [fetchCustomers]);
 
   const handleApplyDiscount = () => {
     const value = parseFloat(discountInput);
@@ -174,33 +150,10 @@ export default function CartPanel({ onCheckout }: CartPanelProps) {
       {state.items.length > 0 && (
         <div className="border-t border-white/[0.06] p-4 space-y-4">
           {/* Customer Selection */}
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-white/50 uppercase tracking-wider flex items-center gap-1.5">
-              <User className="w-3 h-3" /> Customer
-            </p>
-            <Select
-              value={state.customer_id?.toString() || "walk-in"}
-              onValueChange={(val) => setCustomer(val === "walk-in" ? null : parseInt(val))}
-            >
-              <SelectTrigger className="h-9 bg-white/5 border-white/10 text-white text-xs">
-                <SelectValue placeholder="Walk-in Customer" />
-              </SelectTrigger>
-              <SelectContent className="bg-slate-900 border-white/10">
-                <SelectItem value="walk-in" className="text-white/70 focus:text-white focus:bg-white/10">
-                  Walk-in Customer
-                </SelectItem>
-                {customers.map((cust) => (
-                  <SelectItem
-                    key={cust.id}
-                    value={cust.id.toString()}
-                    className="text-white/70 focus:text-white focus:bg-white/10"
-                  >
-                    {cust.name} {cust.phone ? `(${cust.phone})` : ""}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <CustomerSelector
+            customerId={state.customer_id}
+            onCustomerChange={setCustomer}
+          />
 
           {/* Discount */}
           <div className="space-y-2">

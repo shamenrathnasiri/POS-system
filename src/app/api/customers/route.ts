@@ -16,6 +16,13 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "50");
     const search = searchParams.get("search") || "";
+    const phone = searchParams.get("phone") || "";
+
+    // Exact phone lookup — returns single customer or null
+    if (phone) {
+      const customer = await Customer.findOne({ where: { phone } });
+      return successResponse({ customer });
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {};
@@ -53,9 +60,27 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, email, phone, address } = body;
 
-    if (!name) return errorResponse("Customer name is required", 400);
+    // For quick-add: phone is required, name defaults to phone if not provided
+    if (!name && !phone) return errorResponse("Customer name or phone is required", 400);
 
-    const customer = await Customer.create({ name, email, phone, address });
+    // If phone provided, check for existing customer first
+    if (phone) {
+      const existing = await Customer.findOne({ where: { phone } });
+      if (existing) {
+        // Update name if provided and current name is just the phone number
+        if (name && existing.name === existing.phone) {
+          await existing.update({ name });
+        }
+        return successResponse(existing, "Customer already exists", 200);
+      }
+    }
+
+    const customer = await Customer.create({
+      name: name || phone || "Customer",
+      email,
+      phone,
+      address,
+    });
     return successResponse(customer, "Customer created successfully", 201);
   } catch (error) {
     return handleApiError(error);

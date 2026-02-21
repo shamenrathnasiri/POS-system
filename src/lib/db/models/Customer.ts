@@ -51,6 +51,7 @@ Customer.init(
     phone: {
       type: DataTypes.STRING(20),
       allowNull: true,
+      unique: { name: "customers_phone_unique", msg: "Phone number already exists" },
     },
     address: {
       type: DataTypes.TEXT,
@@ -72,7 +73,7 @@ Customer.init(
     createdAt: "created_at",
     updatedAt: "updated_at",
     deletedAt: "deleted_at",
-    indexes: [{ fields: ["name"] }, { fields: ["phone"] }, { fields: ["email"] }],
+    indexes: [{ fields: ["name"] }, { fields: ["phone"], unique: true }, { fields: ["email"] }],
   }
 );
 
