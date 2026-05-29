@@ -2,10 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import logoImage from "@/assests/LOGO.png";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -15,7 +17,6 @@ import {
   Receipt,
   BarChart3,
   LogOut,
-  ShoppingBag,
   ChevronRight,
   Shield,
   Settings,
@@ -45,8 +46,15 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-5">
         <Link href="/pos" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
-            <ShoppingBag className="w-5 h-5 text-white" />
+          <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/15 shadow-lg shadow-black/40 bg-transparent">
+            <Image
+              src={logoImage}
+              alt="ABC POS logo"
+              width={56}
+              height={56}
+              className="w-full h-full object-contain mix-blend-lighten drop-shadow-[0_0_10px_rgba(255,170,0,0.25)]"
+              priority
+            />
           </div>
           <div>
             <h1 className="text-lg font-bold text-white tracking-tight">

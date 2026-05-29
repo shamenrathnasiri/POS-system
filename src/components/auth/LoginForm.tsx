@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ShoppingBag, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import logoImage from "@/assests/LOGO.png";
 
 export default function LoginForm() {
   const { login, register } = useAuth();
@@ -45,8 +47,15 @@ export default function LoginForm() {
 
       <Card className="w-full max-w-md relative border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
         <CardHeader className="text-center space-y-4 pb-2">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-            <ShoppingBag className="w-8 h-8 text-white" />
+          <div className="mx-auto w-24 h-24 rounded-2xl overflow-hidden border border-white/20 bg-transparent shadow-lg shadow-black/40">
+            <Image
+              src={logoImage}
+              alt="ABC POS logo"
+              width={96}
+              height={96}
+              className="w-full h-full object-contain mix-blend-lighten drop-shadow-[0_0_14px_rgba(255,170,0,0.3)]"
+              priority
+            />
           </div>
           <div>
             <CardTitle className="text-2xl font-bold text-white tracking-tight">

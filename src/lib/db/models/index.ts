@@ -77,9 +77,7 @@ const syncDatabase = async (force = false) => {
       if (force) {
         await sequelize.sync({ force: true });
       } else {
-        // Use sync without alter to avoid heavy introspection queries
-        // that can cause ECONNRESET on some MySQL configurations.
-        // For schema changes, use migrations instead.
+        // Keep sync lightweight in regular startup.
         await sequelize.sync();
       }
       console.log("✅ Database synced successfully.");
